@@ -1,14 +1,3 @@
-#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-# @FileName  :DataPrepare.py
-# @Time      :2024/1/5 16:24
-# @Author    :Guoqing Cai
-
-'''
-Usage:
-'''
-
-
 
 from dataload_func import *
 import numpy as np
