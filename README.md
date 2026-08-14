@@ -1,7 +1,7 @@
 # RCSNet: Rhythm Commonality-Specificity Network for MI-EEG Decoding
 
 Official PyTorch implementation of the paper:  
-**"Rhythm Commonality–Specificity Network for Motor Imagery EEG Decoding"**
+**"Rhythm Commonality–Specificity Learning for Multi-Rhythm Motor Imagery EEG Decoding"**
 
 > **Note**: This repository is structured for anonymous peer-review. All author and institutional details have been removed.
 
@@ -9,49 +9,55 @@ Official PyTorch implementation of the paper:
 
 ## 📖 Introduction
 
-Motor Imagery Brain-Computer Interfaces (MI-BCIs) decode motor intentions directly from electroencephalography (EEG) signals. Although sensorimotor rhythms ($\mu/\alpha$ and $\beta$ bands) provide key physiological bases for discriminating motor imagery, existing deep learning methods either process broadband signals uniformly or treat multiple rhythms as monolithic units, neglecting what information is **shared across rhythms** and what remains **specific to individual rhythms**.
+Motor imagery brain–computer interfaces (MI-BCIs) decode motor intentions from electroencephalography (EEG) signals. MI-related neural activity is characterized by rhythmic modulations distributed across multiple frequency ranges, particularly the $\mu/\alpha$ and $\beta$ rhythms. Existing deep learning methods have substantially improved MI-EEG decoding, but the shared task-related information across rhythms and the information specific to individual rhythms remain insufficiently characterized.
 
-To address this, we propose **RCSNet** (**Rhythm Commonality–Specificity Network**), which explicitly models both cross-rhythm commonality and rhythm-dependent specificity:
-1. **Rhythm View Construction (RVC)**: Utilizes learnable Sinc-based depthwise filters to dynamically decompose raw EEG signals into multiple frequency-differentiated rhythmic views.
-2. **Dual-Path Rhythm Encoding**: Encodes each view into separate rhythm-common and rhythm-specific representation spaces using shallow spatio-temporal encoders.
-3. **Commonality–Specificity Loss ($\mathcal{L}_{\mathrm{CS}}$)**: Enforces cross-rhythm consistency on common representations and common-specific diversity within each view.
-4. **Deep Temporal Encoding (DTE)**: Captures long-term temporal dependencies using temporal learners (e.g., GRU, Transformer, CNN) on aggregated common features and independent specific features.
-5. **Uncertainty-Aware Fusion (UAF)**: Adaptively fuses predictions from common and specific branches during inference based on sample-wise predictive entropy.
+To address this issue, we propose **RCSNet (Rhythm Commonality–Specificity Network)**, a multi-rhythm MI-EEG decoding framework that jointly models cross-rhythm commonality and rhythm-specific information.
+
+RCSNet consists of five main components:
+
+1. **Rhythm View Construction (RVC)**  
+   Learnable channel-wise Sinc filters construct multiple frequency-differentiated rhythmic views directly from EEG signals.
+
+2. **Dual-Path Rhythm Encoding**  
+   Each rhythmic view is encoded through independent common and specific pathways to obtain rhythm-common and rhythm-specific representations.
+
+3. **Commonality–Specificity Loss ($\mathcal{L}_{\mathrm{CS}}$)**  
+   Cross-rhythm consistency is encouraged among common representations, while redundancy between common and specific representations is reduced within each rhythm.
+
+4. **Deep Temporal Encoding (DTE)**  
+   Temporal dependencies are further modeled for the aggregated common representation and individual rhythm-specific representations. The implementation supports GRU, LSTM, Transformer, and temporal CNN encoders.
+
+5. **Uncertainty-Aware Fusion (UAF)**  
+   During inference, predictions from the common and rhythm-specific branches are adaptively combined according to their sample-wise predictive uncertainty.
 
 ---
 
 ## 🏗️ Repository Structure
 
 ```text
-├── rcsnet.py                    # RCSNet model architecture, STConvEncoder, DTE, and RCSNetLoss
-├── train_model.py               # Single-fold training loop, metrics calculation, and UAF evaluation
-├── run_experiments.py           # Experiment runner for BCI Competition IV-2a dataset
-├── run_experiments_openbmi.py   # Experiment runner for OpenBMI (Lee2019_MI) dataset
-├── DataPrepare.py               # Data loading and dataset preprocessing interface
-├── prepocess_in_model.py        # Bandpass filtering and window cropping helper functions
-├── requirements.txt             # Environment dependencies
-└── README.md                    # Project documentation
+├── RCSNet.py                             # RCSNet model architecture, STConvEncoder, DTE, and RCSNetLoss
+├── train_model_withMean_oneStage.py      # Single-fold training loop, metrics calculation
+├── Classify_BNCI2014_001_WithinSub.py    # Experiment runner for BCI Competition IV-2a dataset
+├── Classify_Lee2019_MI_WithinSub.py      # Experiment runner for OpenBMI (Lee2019_MI) dataset
+├── DataPrepare.py                        # Data loading and dataset preprocessing interface
+├── prepocess_in_model.py                 # Bandpass filtering and window cropping helper functions
+└── README.md                             # Project documentation
 ```
 
 ---
 
 ## 🛠️ Environment Setup
 
-We recommend using Anaconda with Python 3.8+ and PyTorch with CUDA acceleration.
+The implementation is based on PyTorch. We recommend Python 3.8 or later and a CUDA-enabled environment for GPU training.
+
+Install the main dependencies with:
 
 ```bash
-# Clone the anonymous repository
-git clone https://github.com/anonymous/RCSNet.git
-cd RCSNet
-
-# Create and activate conda environment
-conda create -n rcsnet python=3.8 -y
-conda activate rcsnet
-
-# Install dependencies
-pip install torch torchvision torchaudio
+pip install torch
 pip install numpy scipy scikit-learn mne
 ```
+
+The exact PyTorch version can be selected according to the installed CUDA version.
 
 ---
 
@@ -61,14 +67,14 @@ pip install numpy scipy scikit-learn mne
 To run 4-class MI decoding experiments on the BCI Competition IV-2a dataset (22 channels, 9 subjects):
 
 ```bash
-python run_experiments.py
+python Classify_BNCI2014_001_WithinSub.py
 ```
 
 ### 2. OpenBMI (Lee2019_MI) Dataset
 To run 2-class MI decoding experiments on the OpenBMI dataset (62 channels, 21-subject valid subset):
 
 ```bash
-python run_experiments_openbmi.py
+python Classify_Lee2019_MI_WithinSub.py
 ```
 
 All evaluation metrics (Accuracy, Precision, F1-Score, and Cohen's Kappa) will be automatically computed and saved as formatted `.txt` files under the `./results/` directory.
@@ -82,10 +88,10 @@ Default hyperparameters for `RCSNet` can be adjusted in the experiment scripts:
 ```python
 model_para = {
     'K': 3,                  # Number of learnable rhythmic views
-    'rdm_filters': 32,       # Number of shallow spatio-temporal channels
-    'time_out': 1,           # Pooled temporal feature dimension
+    'rdm_filters': 20,       # Number of shallow spatio-temporal channels
+    'time_out': 16,           # Pooled temporal feature dimension
     'seq_model_type': 'gru', # Temporal sequence learner ('gru', 'lstm', 'transformer', 'cnn')
-    'beta': 0.5              # Weight for Commonality-Specificity Loss
+    'beta': 0.05              # Weight for Commonality-Specificity Loss
 }
 ```
 
@@ -105,8 +111,6 @@ We sincerely thank the authors of the following open-source projects and codebas
 * **MSVTNet** — Liu et al., *IEEE Journal of Biomedical and Health Informatics*, 2024. [[Paper](https://doi.org/10.1109/JBHI.2024.3450753)] | [[Code](https://github.com/SheepTAO/MSVTNet)]
 * **IFNet** — Wang et al., *IEEE Transactions on Neural Systems and Rehabilitation Engineering*, 2023. [[Paper](https://doi.org/10.1109/TNSRE.2023.3257319)] | [[Code](https://github.com/Jiaheng-Wang/IFNet)]
 * **SST-DPN** — Han et al., *Knowledge-Based Systems*, 2025. [[Paper](https://doi.org/10.1016/j.knosys.2025.113315)] | [[Code](https://github.com/Open-EXG/SST-DPN)]
-
-特别感谢 **EEGConformer** [[12]] [[Paper](https://doi.org/10.1109/TNSRE.2022.3230250) | [Code](https://github.com/eeyhsong/EEG-Conformer)] 为本研究提供的训练范式与评估管线（Training Paradigm and Evaluation Pipeline）。本项目的数据加载、模型训练与评估框架在此基础上进行了进一步深化与定制。
 
 Special thanks to EEGConformer [[Paper](https://doi.org/10.1109/TNSRE.2022.3230250) | [Code](https://github.com/eeyhsong/EEG-Conformer)] for providing the training paradigm and evaluation pipeline that served as an important foundation for this study. Building upon this framework, we further customized and extended the data loading, model training, and evaluation procedures to suit the specific requirements of our work.
 
