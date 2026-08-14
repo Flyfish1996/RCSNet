@@ -95,19 +95,18 @@ model_para = {
 
 We sincerely thank the authors of the following open-source projects and codebases for providing invaluable baselines, reference implementations, and theoretical insights for this study:
 
-* **EEGNet** [[11]] - Lawhern et al., *Journal of Neural Engineering*, 2018. [[Paper](https://doi.org/10.1088/1741-2552/aace8c)]
-* **ShallowConvNet (ShallowNet)** [[10]] - Schirrmeister et al., *Human Brain Mapping*, 2017. [[Paper](https://doi.org/10.1002/hbm.23730)] | [[Code](https://github.com/braindecode/braindecode)]
-* **FBCNet** [[17]] - Mane et al., *IEEE TNSRE*, 2021. [[Paper](https://doi.org/10.1109/TNSRE.2021.3128525)] | [[Code](https://github.com/ravikiran-mane/FBCNet)]
-* **LightConvNet** [[38]] - Mane et al., *IEEE TNSRE*, 2023. [[Paper](https://doi.org/10.1109/TNSRE.2023.3283134)] | [[Code](https://github.com/ravikiran-manepalli/LightConvNet)]
-* **LMDANet** [[34]] - Miao et al., *NeuroImage*, 2023. [[Paper](https://doi.org/10.1016/j.neuroimage.2023.120209)] | [[Code](https://github.com/MiaoZhengQing/LMDA-Code)]
-* **EEGConformer** [[12]] - Song et al., *IEEE TNSRE*, 2022. [[Paper](https://doi.org/10.1109/TNSRE.2022.3230250)] | [[Code](https://github.com/eeyhsong/EEG-Conformer)]
-* **TransNet** [[16]] - *IEEE TNSRE*, 2024. [[Paper](https://doi.org/10.1109/TNSRE.2024.3375812)]
-* **MSVTNet** [[20]] - *Biomedical Signal Processing and Control*, 2024. [[Paper](https://doi.org/10.1016/j.bspc.2024.106202)]
-* **IFNet** [[19]] - *IEEE TNSRE*, 2023. [[Paper](https://doi.org/10.1109/TNSRE.2023.3298284)]
-* **SST-DPN** [[14]] - *Biomedical Signal Processing and Control*, 2025. [[Paper](https://doi.org/10.1016/j.bspc.2024.107000)]
+* **EEGNet** — Lawhern et al., *Journal of Neural Engineering*, 2018. [[Paper](https://doi.org/10.1088/1741-2552/aace8c)]
+* **ShallowConvNet (ShallowNet)** — Schirrmeister et al., *Human Brain Mapping*, 2017. [[Paper](https://doi.org/10.1002/hbm.23730)] | [[Code](https://github.com/braindecode/braindecode)]
+* **FBCNet**  — Mane et al., *arXiv*, 2021. [[Paper](https://arxiv.org/abs/2104.01233)] | [[Code](https://github.com/ravikiran-mane/FBCNet)]
+* **LightConvNet** — Ma et al., *IEEE Transactions on Neural Systems and Rehabilitation Engineering*, 2023. [[Paper](https://doi.org/10.1109/TNSRE.2023.3299355)] | [[Code](https://github.com/Ma-Xinzhi/LightConvNet)]
+* **LMDA-Net**  — Miao et al., *NeuroImage*, 2023. [[Paper](https://doi.org/10.1016/j.neuroimage.2023.120209)] | [[Code](https://github.com/MiaoZhengQing/LMDA-Code)]
+* **EEGConformer** — Song et al., *IEEE Transactions on Neural Systems and Rehabilitation Engineering*, 2023. [[Paper](https://doi.org/10.1109/TNSRE.2022.3230250)] | [[Code](https://github.com/eeyhsong/EEG-Conformer)]
+* **EEG-TransNet (TransNet)** — Ma et al., *Computers in Biology and Medicine*, 2024. [[Paper](https://doi.org/10.1016/j.compbiomed.2024.108504)] | [[Code](https://github.com/Ma-Xinzhi/EEG-TransNet)]
+* **MSVTNet** — Liu et al., *IEEE Journal of Biomedical and Health Informatics*, 2024. [[Paper](https://doi.org/10.1109/JBHI.2024.3450753)] | [[Code](https://github.com/SheepTAO/MSVTNet)]
+* **IFNet** — Wang et al., *IEEE Transactions on Neural Systems and Rehabilitation Engineering*, 2023. [[Paper](https://doi.org/10.1109/TNSRE.2023.3257319)] | [[Code](https://github.com/Jiaheng-Wang/IFNet)]
+* **SST-DPN** — Han et al., *Knowledge-Based Systems*, 2025. [[Paper](https://doi.org/10.1016/j.knosys.2025.113315)] | [[Code](https://github.com/Open-EXG/SST-DPN)]
 
-特别感谢 **EEGConformer** [[12]] [[Paper](https://doi.org/10.1109/TNSRE.2022.3230250) | [Code](https://github.com/eeyhsong/EEG-Conformer)] 为本研究提供的训练范式与评估管线（Training Paradigm and Evaluation Pipeline），本项目的数据加载与训练评估框架在此基础上进行了深化与定制。
+特别感谢 **EEGConformer** [[12]] [[Paper](https://doi.org/10.1109/TNSRE.2022.3230250) | [Code](https://github.com/eeyhsong/EEG-Conformer)] 为本研究提供的训练范式与评估管线（Training Paradigm and Evaluation Pipeline）。本项目的数据加载、模型训练与评估框架在此基础上进行了进一步深化与定制。
 
----
-
+Special thanks to EEGConformer [[Paper](https://doi.org/10.1109/TNSRE.2022.3230250) | [Code](https://github.com/eeyhsong/EEG-Conformer)] for providing the training paradigm and evaluation pipeline that served as an important foundation for this study. Building upon this framework, we further customized and extended the data loading, model training, and evaluation procedures to suit the specific requirements of our work.
 
