@@ -3,8 +3,6 @@
 Official PyTorch implementation of the paper:  
 **"Rhythm Commonality–Specificity Learning for Multi-Rhythm Motor Imagery EEG Decoding"**
 
-> **Note**: This repository is structured for anonymous peer-review. All author and institutional details have been removed.
-
 ---
 
 ## 📖 Introduction
